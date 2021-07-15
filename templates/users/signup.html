@@ -1,0 +1,112 @@
+{% load tailwind_filters %}
+
+{%load static%}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Jmit Network</title>
+        <link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Work+Sans:200,400&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="/build/tailwind.css" type="text/css" media="screen" title="no title" charset="utf-8" />
+        <style media="screen">
+          .wid{
+            margin-top: -20px;
+          }
+          .wid2{
+            margin-top: -35px;
+          }
+        </style>
+    </head>
+    <body class>
+        <div class="lg:flex">
+            <div class="lg:w-1/2 xl:max-w-screen-sm">
+
+                <div class="py-10 wid lg:bg-white flex justify-center lg:justify-start lg:px-12">
+                    <div class="cursor-pointer flex items-center">
+                        <div>
+                          <svg class="w-20" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs"
+                          height="100%" width="100%" id="Layer_1" x="0px" y="0px" viewBox="0 0 300 300">
+                            <g id="svg-container" transform="matrix(3.28,0,0,3.28,102.02999237060547,58.667624168396)">
+                              <g id="surrounding_shape" transform="matrix(1,0,0,1,14.625,27.84523482422729)">
+                                <ellipse rx="39.72417014635937" ry="39.72417014635937" cx="0" cy="0" fill="#93d9f8" data-shape-id="custom" surrounded-groups="headline" fill-type="opaque" id="surrounding_shape_0">
+                                </ellipse>
+                              </g>
+                              <g id="headline" transform="matrix(1,0,0,1,0,1.7763568394002505e-15)">
+                                <text data-font-id="1204" font-family="edo" id="headline_0" transform="matrix(1,0,0,1,0,24.875874125874127)" svgjs:data="{&quot;leading&quot;:&quot;1.3&quot;}">
+                                  <tspan id="headline_0_word_0" fill="#ffffff" svgjs:data="{&quot;leading&quot;:&quot;1.3&quot;}">
+                                    JMIT
+                                  </tspan>
+                                </text>
+                                <text data-font-id="1204" font-family="edo" id="headline_1" transform="matrix(1,0,0,1,-17.125,39.21057636287663)" svgjs:data="{&quot;leading&quot;:&quot;1.3&quot;}">
+                                  <tspan id="headline_1_word_0" fill="#ffffff" svgjs:data="{&quot;leading&quot;:&quot;1.3&quot;}">
+                                    NETWORK
+                                  </tspan>
+                                </text>
+                              </g>
+                            </g>
+                            <defs>
+                              <style>@font-face {font-family: edo;src: url(https://pismo.tailorbrands.com/v2/px_fonts/edo)}
+                              </style>
+                            </defs>
+                          </svg>
+
+                        </div>
+                        <div class="text-4xl text-indigo-800 text-bold tracking-wide ml-2 font-semibold">
+                          <a href="dashboard.html">Jmit Network</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="wid2 mt-5 px-12 sm:px-24 md:px-48 lg:px-12 lg:mt-25 lg:px-24 lg:max-w-2xl">
+                    <h2 class="text-center text-3xl text-indigo-900 font-display font-semibold
+                              md:text-left text-bold">Sign in</h2>
+
+                    <div class="mt-5">
+                      <form method="POST" action="{% url 'users:signup' %}">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                            <div class="w-full px-3 mb-5">
+                                <button type="submit" class="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold">Register!</button>
+                            </div>
+                      </form>
+
+
+                        <!-- <div class="flex mt-7 items-center text-center"> -->
+                            <!-- <hr class="border-gray-300 border-1 w-full rounded-md"> -->
+                            <!-- <label class="block font-medium text-sm text-gray-600 w-full">
+                                or Sign in with
+                            </label>
+                            <hr class="border-gray-300 border-1 w-full rounded-md">
+                        </div>
+
+                        <div class="flex mt-7 justify-center w-full">
+                            <button class="bg-red-500 border-none px-4 py-2 rounded-xl cursor-pointer text-white shadow-xl hover:shadow-inner transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105">
+                                Google
+                            </button> -->
+
+                        <!-- </div> -->
+                        <div class="mt-5">
+                            <div class="flex justify-center items-center font-medium text-md">
+                                Already have an account ? <a href="{% url "users:login" %}" class="cursor-pointer text-indigo-600 hover:text-indigo-800"> &nbsp;  Log in </a>
+                            </div>
+
+                            <!-- <div class="flex justify-center font-medium text-md items-center">
+                                  Forgot Password ? <a href="{% url "reset_password" %}" class="cursor-pointer text-indigo-600 hover:text-indigo-800"> &nbsp;  Click here </a>
+                            </div> -->
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="hidden lg:flex items-center justify-center flex-1 h-screen">
+                <div class="max-w-4xl transform duration-200 hover:scale-110 cursor-pointer">
+                    <img src="{%static 'si.jpg'%}" alt="">
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

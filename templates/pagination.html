@@ -1,0 +1,17 @@
+<div style="float:left;margin-left:10%;font-size:20px;" class="pag-1">
+  Showing {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} &ensp;
+</div>
+<div style="float:left;" class="">
+{% if page_obj.has_previous %}
+    <a class="inline-block bg-indigo-400 px-4 py-2 text-white font-semibold text-sm rounded" href="?page={{ page_obj.previous_page_number }}">
+        Prev
+    </a>&ensp;
+{% endif %}
+</div>
+{% if page_obj.has_next %}
+
+    <a class="inline-block bg-gray-200 px-4 py-2 text-black font-semibold text-sm rounded" href="?page={{ page_obj.next_page_number }}">
+        Next
+    </a>
+{% endif %}
+<br><br>

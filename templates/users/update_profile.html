@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{%load static%}
+{% block head_content %}
+<title>@{{ user.username }} - Jmit Network </title>
+<style media="screen">
+  .wid{
+    margin-top: -20px;
+  }
+  .wid2{
+    margin-top: -35px;
+  }
+  .pb-full {
+    padding-bottom: 100%;
+  }
+
+
+  @media screen and (min-width: 768px) {
+    .post:hover .overlay {
+      display: block;
+    }
+  }
+
+</style>
+{% endblock %}
+{% block container %}
+      <!-- component -->
+      <div class="flex flex-col h-screen bg-gray-100" >
+      	<div class="grid place-items-center mx-2 my-20 sm:my-auto">
+      		<div class="bg-white shadow-md rounded-2xl p-5">
+      			<div class="flex flex-col sm:flex-row items-center">
+      				<h2 class="font-semibold text-xl mr-auto">Edit your Profile</h2>
+      				<div class="w-full sm:w-auto sm:ml-auto mt-3 sm:mt-0"></div>
+      			</div>
+
+      			<div class="mt-5">
+      				<div class="form" id="profile-box">
+                <form action="{% url 'users:update_profile' %}" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+
+      					<div class="md:space-y-2 mb-3">
+      						<!-- <label class="text-xs font-semibold text-gray-600 py-2">Company Logo<abbr class="hidden" title="required">*</abbr></label> -->
+      						<div class="flex items-center py-6">
+      							<div class="w-12 h-12 mr-4 flex-none rounded-xl border overflow-hidden">
+                      {% if user.profile.picture %}
+      								<img class="w-12 h-12 mr-4 object-cover" src="{{ user.profile.picture.url }}" alt="Reload">
+                      {% else%}
+                      <img class="w-12 h-12 mr-4 object-cover" src="{% static 'img/default-profile.png' %}" alt="Reload">
+                      {% endif %}
+                      </div>
+
+      								<label class="cursor-pointer ">
+                        <span class="focus:outline-none text-white text-sm py-2 px-4 rounded-full bg-indigo-400 hover:bg-indigo-500 hover:shadow-lg">
+                            Browse
+                        </span>
+
+                        <input type="file" class="hidden" name="picture" :multiple="multiple" :accept="accept">
+                        {% for error in form.picture.errors %}
+                        	<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert"><b>Picture:</b> {{error}}</div>
+                        {% endfor %}
+                      </label>
+                      <h1>  &nbsp; @{{ user.username }} | {{ user.get_full_name }}</h1>
+      							</div>
+
+      						</div>
+                  <!-- <span> -->
+
+                  <!-- </span> -->
+      						<div class="md:flex md:flex-row md:space-x-4 w-full text-xs">
+      							<div class="mb-3 md:space-y-2 w-full text-xs">
+      								<label class="font-semibold text-gray-600 py-2">Website
+                        <!-- <abbr title="required">*</abbr> -->
+                      </label>
+      								<input placeholder="Company Name"
+                      class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4
+                      {% if form.website.errors %}
+                        is-invalid
+                      {% endif %}"
+                      type="text"
+                      name="website"
+                      placeholder="Website"
+                      value="{% if form.errors %}{{form.website.value}}{% else %}{{ user.profile.website }}{% endif %}">
+      								<!-- <p class="text-red text-xs hidden">Please fill out this field.</p> -->
+      							</div>
+                    <div class="invalid-feedback">
+                      {% for error in form.website.errors %}
+                        {{error}}
+                      {% endfor %}
+                    </div>
+      						</div>
+
+      							<div class="md:flex md:flex-row md:space-x-4 w-full text-xs">
+      								<div class="w-full flex flex-col mb-3">
+      									<label class="font-semibold text-gray-600 py-2">Phone number</label>
+      									<input class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4
+                        {% if form.phone_number.errors %}
+                          is-invalid
+                        {% endif %}"
+                        type="text"
+                        name="phone_number"
+                        placeholder="Phone number"
+                        value="{% if form.errors %}{{form.phone_number.value}}{% else %}{{ user.profile.phone_number }}{% endif %}">
+                    </div>
+                    <div class="invalid-feedback">
+                    	{% for error in form.phone_number.errors %}
+                    		{{error}}
+                    	{% endfor %}
+                    </div>
+      								</div>
+
+
+      								<div class="flex-auto w-full mb-1 text-xs space-y-2">
+      									<label class="font-semibold text-gray-600 py-2">Biography</label>
+                        <textarea
+                          class="w-full min-h-[100px] max-h-[300px] h-28 appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg  py-4 px-4
+                          {% if form.biography.errors %}
+                              is-invalid
+                            {% endif %}"
+                          name="biography">{% if form.errors %}{{form.biography.value}}{% else %}{{user.profile.biography }}{% endif %}
+                        </textarea>
+                      <div class="invalid-feedback">{% for error in form.biography.errors %}{{error}}{% endfor %}</div>
+
+      									<!-- <p class="text-xs text-gray-400 text-left my-3">You inserted 0 characters</p> -->
+      								</div>
+
+
+      								<!-- <p class="text-xs text-red-500 text-right my-3">Required fields are marked with an
+      									asterisk <abbr title="Required field">*</abbr></p> -->
+      								<div class="mt-5 text-center md:space-x-3 md:block flex flex-col-reverse">
+      									<!-- <button class="mb-2 md:mb-0 bg-white px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 rounded-full hover:shadow-lg hover:bg-gray-100"> Cancel </button> -->
+      									<button type="submit" class="mb-2 md:mb-0 bg-indigo-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-indigo-500">
+                            Update info
+                        </button>
+      								</div>
+      							</div>
+      						</div>
+      					</div>
+      				</div>
+      			</div>
+{% endblock %}

@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{%load static%}
+{% block head_content %}
+<title>@{{ user.username }} - Jmit Network </title>
+<style media="screen">
+.star-rating {
+
+display:flex;
+flex-direction: row-reverse;
+font-size:1.9em;
+justify-content:space-around;
+padding:0 .2em;
+text-align:center;
+width:5em;
+}
+
+.star-rating input {
+display:none;
+}
+
+.star-rating label {
+color:#ccc;
+cursor:pointer;
+}
+
+.star-rating :checked ~ label {
+color:#f90;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+color:#fc0;
+}
+</style>
+{% endblock %}
+{% block container %}
+<br><br>
+{%if request.user.profile.is_student%}
+<section class="text-gray-600 body-font">
+  <div class="container px-5 py-24 mx-auto flex flex-wrap items-center">
+    <div style="
+          height: 440px;
+          overflow-x: hidden;
+          overflow-y: auto;
+        " class="lg:w-3/5 md:w-1/2 md:pr-16 lg:pr-0 pr-0">
+      <h1 class="title-font font-medium text-3xl text-gray-900 text-center">Club Rating</h1>
+      <p class="leading-relaxed mt-4 text-center">View the ratings of any club and you can also rate the club..</p>
+      <!-- component table for rating -->
+      <div>
+        <!-- <h2 class="text-center text-gray-900 text-lg">Club Ratings</h2> -->
+
+        <!-- <table class="text-left m-4" style="border-collapse:collapse">
+      <thead>
+      <tr>
+          <th class="py-4 px-6 bg-grey-lighter font-sans font-medium uppercase text-sm text-grey border-b border-grey-light">Club Name</th>
+          <th class="py-4 px-6 bg-grey-lighter font-sans font-medium uppercase text-sm text-grey border-b border-grey-light">Total Rating</th>
+      </tr>
+      </thead>
+              </table> -->
+              <tbody class="bg-gray-200">
+
+                <div class="grid grid-cols-2 gap-4">
+                  <center>
+                  <div class="hover:bg-blue-lightest">
+                    <p class="text-indigo-900 font-semibold text-lg py-4 px-6 border-b border-grey-light">Club Name</p><br>
+                    {% for j in n%}
+                    <p class="text-indigo-400 font-semibold text-md py-4 px-6 border-b border-grey-light">{{j}}</p><br>
+                    {%endfor%}
+                  </div>
+                </center>
+                  <center>
+                  <div class="">
+                    <p class="text-indigo-900 font-semibold text-lg py-4 px-6 border-b border-grey-light">Total Rating</p><br>
+                    {% for i in main%}
+                    <p class="text-indigo-400 font-semibold text-md py-4 px-6 border-b border-grey-light text-center">{{i|floatformat:1}}</p><br>
+                    {%endfor%}
+                  </div>
+                </center>
+                </div>
+
+              </tbody>
+
+          </div>
+    </div>
+    <div class="lg:w-2/6 md:w-1/2 bg-gray-100 rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0">
+      <h2 class="text-gray-900 text-lg font-medium title-font mb-5">Rate Here</h2>
+      {% if request.user.is_authenticated %}
+      <div class="form" id="profile-box">
+        <form action="" method="POST">
+          {% csrf_token %}
+      <div class="relative mb-4">
+        <label class="leading-7 text-sm text-gray-600">Choose Club</label>
+        <select class="block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4 md:w-full " required="required" name="club">
+          <option value="" selected>Select Club</option>
+          {%for i in n%}
+          <option value="{{i}}">{{i}}</option>
+          {%endfor%}
+    </select>
+        <!-- <input type="text" id="full-name" name="full-name" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"> -->
+      </div>
+      <div class="relative mb-4">
+        <label class="leading-7 text-sm text-gray-600">Star</label>
+        <div class="star-rating">
+          <input type="radio" id="5-stars" name="stars" value="5" />
+          <label for="5-stars" class="star">&#9733;</label>
+          <input type="radio" id="4-stars" name="stars" value="4" />
+          <label for="4-stars" class="star">&#9733;</label>
+          <input type="radio" id="3-stars" name="stars" value="3" />
+          <label for="3-stars" class="star">&#9733;</label>
+          <input type="radio" id="2-stars" name="stars" value="2" />
+          <label for="2-stars" class="star">&#9733;</label>
+          <input type="radio" id="1-star" name="stars" value="1" />
+          <label for="1-star" class="star">&#9733;</label>
+        </div>
+        <!-- <input type="email" id="email" name="email" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"> -->
+      </div>
+
+      <div class="relative mb-4">
+        <label class="leading-7 text-sm text-gray-600">Content</label>
+        <textarea
+          class="w-full min-h-[100px] max-h-[300px] w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+          name="content">
+        </textarea>
+      </div>
+
+
+      <button type="submit" class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Submit</button>
+    </form>
+  </div>
+
+  {% else %}
+  <p class="text-xs text-gray-500 mt-3">Please sign in to add rating.</p>
+
+  {% endif %}
+
+    </div>
+  </div>
+</section>
+{%endif%}
+{% endblock %}

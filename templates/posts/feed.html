@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{%load static%}
+{% block head_content %}
+<title>@{{ user.username }} - Jmit Network </title>
+<style>
+    .hide-scroll-bar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scroll-bar::-webkit-scrollbar {
+  display: none;
+}
+.fa-heart-o {
+  color: black;
+  cursor: pointer;
+}
+
+.fa-heart {
+  color: red;
+  cursor: pointer;
+}
+.only-phone{
+  display: none;
+}
+.only-laptop{
+  display: block;
+}
+@media only screen and (max-width: 600px) {
+  .event-feed{
+    display: none;
+  }
+  .only-phone{
+    display: block;
+  }
+  .only-laptop{
+    display: none;
+  }
+}
+    </style>
+{% endblock %}
+{% block container %}
+<br><br>
+  <div class="only-phone">
+    {% for post in posts %}
+        {% include 'posts/post_card.html' %}
+    {% endfor %}
+  </div>
+  <div class="only-laptop">
+
+      <div style="margin-left:16%;" class="grid grid-cols-2 gap-10">
+          <div>
+
+              {% for post in posts %}
+                  {% include 'posts/post_card.html' %}
+              {% endfor %}
+          </div>
+          <div style="position:fixed; margin-left:45%;margin-top:35px;" class="event-feed">
+
+            <h1 style="font-size:30px;">Upcoming Events</h1>
+            <div style="
+                  height: 540px;
+                  overflow-x: hidden;
+                  overflow-y: auto;
+                  margin-right:20%;" class="">
+            {% for i in e %}
+            <div class="lg:flex items-center container mx-auto my-auto">
+
+              <!-- Card 1 -->
+              <div class="lg:m-4 shadow-md hover:shadow-lg hover:bg-gray-100 rounded-lg bg-white my-12 mx-8">
+              <!-- Card Content -->
+                <div class="p-4">
+                  <h3 class="font-medium text-indigo-600 text-lg my-2 uppercase">{{i.club_name}}</h3>
+                  <h3 class="font-medium text-gray-600 text-lg my-2 uppercase">{{i.event_name}}</h3>
+                  <h3 class="font-medium font-bold text-gray-800 text-md my-2 uppercase">{{i.event_date}}</h3>
+
+                  To join the event fill out the form given below:
+
+                  <div class="mt-5">
+                    <a href="{{i.link}}" class="hover:bg-indigo-700 rounded-full py-2 px-3 font-semibold hover:text-white bg-indigo-400 text-gray-100">Join</a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            {% endfor %}
+            </div>
+          </div>
+      </div>
+      </div>
+      {% include 'pagination.html' %}
+
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="https://use.fontawesome.com/0206006232.js"></script>
+    <script type="text/javascript">
+
+
+     $(document).ready(function(){
+        $('.Like-form').submit(function(e){
+            e.preventDefault()
+            const post_id=$(this).attr('id')
+            const likedText=$(`.like-btn${post_id}`).text()
+            const trim=$.trim(likedText)
+            console.log(trim)
+            const url=$(this).attr('action')
+            let res
+            const likes=$(`.like-count${post_id}`).text()
+            const trimCount=parseInt(likes)
+            console.log(trimCount)
+            $.ajax({
+                type:'POST',
+                url:url,
+                data:{
+                    'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+                    'post_id':post_id,
+
+                },
+                success:function(response){
+                    console.log("success",response)
+                    if(trim==='Like'){
+                       $(`.like-btn${post_id}`).text('UnLike')
+                        res=trimCount+1
+                        console.log("i m inc")
+                        $(`.like-btn${post_id}`).css('color','green')
+
+
+                    }else{
+                        $(`.like-btn${post_id}`).text('Like')
+                        console.log("i m dec")
+                        res=trimCount-1
+                        $(`.like-btn${post_id}`).css('color','red')
+
+
+                    }
+                    $(`.like-count${post_id}`).text(res)
+                },
+                error:function(response){
+                    console.log('error',response)
+                }
+            })
+        })
+
+
+    });
+    </script>
+{% endblock %}

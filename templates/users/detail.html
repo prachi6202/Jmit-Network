@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{%load static%}
+{% block head_content %}
+<title>@{{ user.username }} - Jmit Network </title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/owl.carousel.min.js" charset="utf-8"></script>
+<script src="https://use.fontawesome.com/826a7e3dce.js" charset="utf-8"></script>
+<style media="screen">
+.carousel-wrap {
+
+height: 300px;
+margin: auto;
+
+width: 90%;
+position: relative;
+z-index: 100;
+background-color: white;
+}
+
+/* fix blank or flashing items on carousel */
+.owl-carousel .item {
+position: relative;
+z-index: 100;
+-webkit-backface-visibility: hidden;
+}
+
+/* end fix */
+.owl-nav > div {
+/* margin-top: -36px; */
+position: absolute;
+top: 30%;
+color: #cdcbcd;
+}
+
+.owl-nav i {
+font-size: 52px;
+}
+
+.owl-nav .owl-prev {
+left: -30px;
+z-index: 200;
+}
+
+.owl-nav .owl-next {
+right: -30px;
+z-index: 200;
+}
+.card {
+margin-top: 20px;
+box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+transition: 0.3s;
+border-radius: 50px;
+margin-bottom: 100px;
+}
+
+.card:hover {
+box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.container {
+padding: 2px 16px;
+}
+.post:hover .overlay {
+  display: block;
+}
+
+@media only screen and (max-width: 600px) {
+
+.carousel-wrap {
+width: 80%;
+}
+.ex{
+  width: 90%;
+  margin: 5%;
+}
+}
+</style>
+{% endblock %}
+{% block container %}
+
+<br><br><br>
+<main class="bg-gray-100 bg-opacity-25">
+
+  <div class="lg:w-8/12 lg:mx-auto mb-8">
+
+    <header class="flex flex-wrap items-center p-4 md:py-8">
+
+      <div class="md:w-3/12 md:ml-16">
+        <!-- profile image -->
+
+        {%if user.profile.picture%}
+          <!-- <img src="{{ user.profile.picture.url }}" alt="@{{ i.user.username}}" class="rounded-circle" max-width="150px" height="150px" /> -->
+          <img class="w-20 h-20 md:w-40 md:h-40 object-cover rounded-full
+                         p-1" src="{{ user.profile.picture.url }}" alt="@{{ i.user.username}}">
+        {%else%}
+        <img class="w-20 h-20 md:w-40 md:h-40 object-cover rounded-full
+                      p-1" src="{% static 'img/default-profile.png'%}" alt="">
+        <!-- <img src="{% static 'img/default-profile.png'%}" alt="" class="rounded-circle" max-width="150px" height="150px" /> -->
+        {%endif%}
+
+      </div>
+
+      <!-- profile meta -->
+      <div class="w-8/12 md:w-7/12 ml-4">
+        <div class="md:flex md:flex-wrap md:items-center mb-4">
+          <h2 class="text-3xl inline-block font-light md:mr-2 mb-2 sm:mb-0">
+            {{ user.first_name }} {{ user.last_name }}
+          </h2>
+
+
+
+          <!-- follow button -->
+          {% if user == request.user %}
+          <a href="{% url "users:update_profile" %}" class="bg-blue-500 px-2 py-1
+                        text-white font-semibold text-sm rounded block text-center
+                        sm:inline-block block">Edit profile</a>
+            {% endif %}
+        </div>
+
+        <!-- post, following, followers list for medium screens -->
+
+
+
+        {%if user.profile.is_club%}
+        <ul class="hidden md:flex space-x-8 mb-4">
+          <li>
+            <span class="font-semibold">{{posts.count}}</span>
+            Posts
+          </li>
+
+          <li>
+              <!-- <a href="/events/ram/{{user.id}}"></a> -->
+            <span class="font-semibold">{{events.count}}</span>
+            Events
+          </li>
+          <li>
+            <span class="font-semibold">{{val|floatformat:1}}/5</span>
+            Rating
+          </li>
+        </ul>
+        {% endif %}
+
+        <!-- user meta form medium screens -->
+        <div class="hidden md:block">
+          <h1 class="font-semibold">About...</h1>
+          <!-- <span>Travel, Nature and Music</span> -->
+          <p>{{ user.profile.biography }}</p>
+        </div>
+
+      </div>
+
+      <!-- user meta form small screens -->
+      <div class="md:hidden text-sm my-2">
+        <h1 class="font-semibold">About...</h1>
+        <!-- <span>Travel, Nature and Music</span> -->
+        <p>{{ user.profile.biography }}</p>
+      </div>
+
+    </header>
+
+    <!-- posts -->
+    <div class="px-px md:px-3">
+
+      <!-- user following for mobile only -->
+        {%if user.profile.is_club%}
+      <ul class="flex md:hidden justify-around space-x-8 border-t
+                text-center p-2 text-gray-600 leading-snug text-sm">
+        <li>
+          <span class="font-semibold text-gray-800 block">{{posts.count}}</span>
+          Posts
+        </li>
+
+        <li>
+          <span class="font-semibold text-gray-800 block">{{events.count}}</span>
+          Events
+        </li>
+        <li>
+          <span class="font-semibold text-gray-800 block">{{val|floatformat:1}}/5</span>
+          Rating
+        </li>
+      </ul>
+      {% endif %}
+
+      <!-- insta freatures -->
+      <ul class="flex items-center justify-around md:justify-center space-x-12
+                    uppercase tracking-widest font-semibold text-xs text-gray-600
+                    border-t">
+        <!-- posts tab is active -->
+        {%if user.profile.is_club%}
+        <li>
+          <a class="inline-block p-3" href="#">
+
+            <span class="hidden md:inline">Posts</span>
+          </a>
+        </li>
+        {% endif %}
+
+      </ul>
+      <!-- flexbox grid -->
+    {%if posts%}
+      <div class="flex flex-wrap flex-col -mx-px md:-mx-3 sm:flex-row" id="user-posts">
+          {% for post in posts %}
+        <!-- column -->
+        <div  style="display:flex; justify-content: center;align-items:center;" class="ex w-1/3 p-px md:px-3">
+          <!-- post 1-->
+          <a href="">
+            <article class="post relative md:mb-6">
+              <!-- post image-->
+              <!-- <img src="{{ post.photo.url }}" alt=""> -->
+              <img class="w-96 h-96"  src="{{ post.photo.url }}" alt="{{ post.title }}">
+              <!-- overlay-->
+              <div  class="overlay bg-gray-800 bg-opacity-25 w-full h-full absolute left-0 top-0  hidden">
+                  {% if user == request.user %}
+                <div class="flex justify-center items-center
+                                    space-x-4 h-full">
+                  <span class="p-2">
+                    <button style="margin-left:-3%;" class="hover:bg-gray-700 rounded-full py-2 px-3 font-semibold hover:text-white bg-green-700 text-gray-100">
+                      <a  href="{% url 'posts:update' pk=post.id %}">Update</a>
+                    </button>
+                  </span>
+
+                  <span class="p-2">
+                    <button class="hover:bg-gray-700 rounded-full py-2 px-3 font-semibold hover:text-white bg-red-700 text-gray-100">
+                      <a  href="{% url 'posts:delete' pk=post.id %}">Delete</a>
+                    </button>
+                  </span>
+                </div>
+                {%endif%}
+              </div>
+
+            </article>
+          </a>
+
+        </div>
+        {% endfor %}
+      </div>
+      {%else%}
+      {%if user.profile.is_club%}
+      <center><h1>No posts at present</h1></center>
+      {%endif%}
+      {%endif%}
+      <ul class="flex items-center justify-around md:justify-center space-x-12
+                    uppercase tracking-widest font-semibold text-xs text-gray-600
+                    border-t">
+        <!-- posts tab is active -->
+        {%if user.profile.is_club%}
+        <li>
+          <a class="inline-block p-3" href="#">
+
+            <span class="hidden md:inline">Events</span>
+          </a>
+        </li>
+        {% endif %}
+
+      </ul>
+      {%if user.profile.is_club%}
+
+      {%if ev%}
+      <div class="carousel-wrap">
+      <div class="owl-carousel">
+
+        {% for i in ev %}
+        <div class="card item">
+          <br><br>
+
+            <center>
+      <div class="container">
+
+        <h3 class="font-medium text-gray-600 text-lg my-2 uppercase">{{i.event_name}}</h3>
+        <h3 class="font-medium font-bold text-gray-800 text-md my-2 uppercase">{{i.event_date}}</h3>
+        <br>
+        <a href="{{i.link}}" class="hover:bg-gray-700 rounded-full py-2 px-3 font-semibold hover:text-white bg-indigo-700 text-gray-100">Join</a>
+      </div>
+    </center>
+    <br><br>
+    </div>
+    {%endfor%}
+        </div>
+    </div>
+    {%else%}
+    <center><h1>No events at present</h1></center>
+    {%endif%}
+    <script type="text/javascript">
+    $('.owl-carousel').owlCarousel({
+    loop: true,
+    margin: 10,
+    nav: true,
+    navText: [
+      "<i class='fa fa-caret-left'></i>",
+      "<i class='fa fa-caret-right'></i>"
+    ],
+    autoplay: true,
+    autoplayTimeout: 1500,
+    responsive: {
+      0: {
+        items: 1
+      },
+      600: {
+        items: 3
+      },
+      1000: {
+        items: 5
+      }
+    }
+    })
+    </script>
+      {%endif%}
+    </div>
+  </div>
+</main>
+{% endblock %}

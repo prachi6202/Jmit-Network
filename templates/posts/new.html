@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{%load static%}
+{% block head_content %}
+<title>{% if not form.title.value %}Create new post{%else%}Update Post{%endif%}</title>
+<style media="screen">
+  .wid{
+    margin-top: -20px;
+  }
+  .wid2{
+    margin-top: -35px;
+  }
+  .pb-full {
+    padding-bottom: 100%;
+  }
+
+
+  @media screen and (min-width: 768px) {
+    .post:hover .overlay {
+      display: block;
+    }
+  }
+
+</style>
+{% endblock %}
+{% block container %}
+      <!-- component -->
+      {%if request.user.profile.is_club%}
+      <div class="flex flex-col h-screen bg-gray-100" >
+      	<div class="grid place-items-center mx-2 my-20 sm:my-auto">
+      		<div class="bg-white shadow-md rounded-2xl p-5">
+      			<div class="flex flex-col sm:flex-row items-center">
+
+
+              {% if not form.title.value %}
+          		<h2 class="font-semibold text-xl mr-auto">Create Post | Post a New Photo</h2>
+
+              {% else %}
+              <h2 class="font-semibold text-xl mr-auto">Update Post</h2>
+              {% endif %}
+
+      				<div class="w-full sm:w-auto sm:ml-auto mt-3 sm:mt-0"></div>
+      			</div>
+
+      			<div class="mt-5">
+      				<div class="form" id="profile-box">
+
+
+                <form method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+
+                  <input type="hidden" name="user" value="{{ request.user.pk}}" />
+                  <input type="hidden" name="profile" value="{{ request.user.profile.pk }}" />
+
+
+                  <!-- </span> -->
+                  {# Website field #}
+                <div class="md:flex md:flex-row md:space-x-4 w-full text-xs">
+                  <div class="mb-3 md:space-y-2 w-full text-sm">
+                    <label class="font-semibold text-gray-600 py-2">Website
+                      <!-- <abbr title="required">*</abbr> -->
+                    </label>
+                    <input
+                    class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4
+                    {% if form.title.errors %}is-invalid{% endif %}"
+                    type="text"
+                    name="title"
+                    placeholder="Title"
+                    value="{% if form.title.value %}{{form.title.value}}{%else%}{% endif %}">
+                    <!-- <p class="text-red text-xs hidden">Please fill out this field.</p> -->
+                  </div>
+                  <div class="invalid-feedback">
+                      {% for error in form.title.errors %}{{ error }}{% endfor %}
+                  </div>
+                </div>
+
+
+                <!-- </span> -->
+                  {# Photo field #}
+      	  			<div class="md:flex md:flex-row md:space-x-4 w-full text-xs">
+      	  				<div class="mb-3 md:space-y-2 w-full text-sm">
+      	  					<label class="font-semibold text-gray-600 py-2">Choose your photo:
+                      <!-- <abbr title="required">*</abbr> -->
+                    </label>
+      	  					<input
+                    class="appearance-none block w-full bg-grey-lighter text-grey-darker border border-grey-lighter rounded-lg h-10 px-4
+                    {% if form.photo.errors %}is-invalid{% endif %}"
+                    type="file"
+                    name="photo"
+                    placeholder="photo">
+
+      	  				</div>
+                  <div class="invalid-feedback">
+                      {% for error in form.photo.errors %}{{ error }}{% endfor %}
+                  </div>
+      	  			</div>
+
+  						<!-- <p class="text-xs text-red-500 text-right my-3">Required fields are marked with an
+  							asterisk <abbr title="Required field">*</abbr></p> -->
+  						<div class="mt-5 text-center md:space-x-3 md:block flex flex-col-reverse">
+  							<!-- <button class="mb-2 md:mb-0 bg-white px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 rounded-full hover:shadow-lg hover:bg-gray-100"> Cancel </button> -->
+  							<button type="submit" class="mb-2 md:mb-0 bg-indigo-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-indigo-500">
+                  Publish!
+                </button>
+
+  						</div>
+
+
+      							</div>
+      						</div>
+      					</div>
+      				</div>
+      			</div>
+                {%endif%}
+            {%if request.user.profile.is_student%}
+            <center><h1>This page is not meant for you</h1></center>
+            {%endif%}
+{% endblock %}

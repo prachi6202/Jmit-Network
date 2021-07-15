@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{%load static%}
+{% block head_content %}
+<title>@{{ user.username }} - Jmit Network </title>
+{% endblock %}
+{% block container %}
+    <!-- component -->
+  {%if request.user.profile.is_club%}
+    <div class="flex flex-col h-screen bg-gray-100" >
+      <div class="grid place-items-center mx-2 my-20 sm:my-auto">
+        <div class="bg-white shadow-md rounded-2xl p-5">
+          <div class="flex flex-col sm:flex-row items-center">
+
+            <h2 class="font-semibold text-xl mr-auto">Delete {{post.title}}?</h2>
+
+            <div class="w-full sm:w-auto sm:ml-auto mt-3 sm:mt-0"></div>
+
+
+          </div>
+          <br>
+          <center>
+            <img class="inline object-cover w-20 h-20 mr-2" src="{{ post.photo.url }}" alt="{{ post.title }}">
+          </center>
+
+          <div class="mt-5">
+            <div class="form">
+
+              <form method="post">
+                {% csrf_token %}
+                <center>
+                <button type="submit" class="mb-2 md:mb-0 bg-red-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-red-500"
+                        value="Delete">
+                    Delete
+                </button>
+                </center>
+
+
+              </form>
+              <center>
+              <button  class="mb-2 md:mb-0 bg-indigo-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-indigo-500">
+                  <a href="{% url 'posts:feed' %}">Cancel</a>
+              </button>
+              </center>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {%endif%}
+{% endblock %}

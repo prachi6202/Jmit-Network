@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{%load static%}
+{% block head_content %}
+<title>@{{ user.username }} - Jmit Network </title>
+{% endblock %}
+{% block container %}
+
+    {%if request.user.profile.is_club%}
+    <div class="flex flex-col h-screen bg-gray-100" >
+      <br><br>
+      <div class="grid place-items-center mx-2 my-20 sm:my-auto">
+        <div class="bg-white shadow-md rounded-2xl p-5">
+          <div class="flex flex-col sm:flex-row items-center">
+
+            {% if not form.event_name.value %}
+            <h2 class="font-semibold text-xl mr-auto">Create Event</h2>
+            {% else %}
+            <h2 class="font-semibold text-xl mr-auto">Update Event</h2>
+            {% endif %}
+
+            <div class="w-full sm:w-auto sm:ml-auto mt-3 sm:mt-0"></div>
+          </div>
+
+          <div class="mt-5">
+            <div class="form">
+              <form method="POST">
+                {% csrf_token %}
+                {{ form|crispy }}
+
+                <button type="submit" class="mb-2 md:mb-0 bg-indigo-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-full hover:shadow-lg hover:bg-indigo-500">
+                    {% if not form.event_name.value %}
+                    Submit
+                    {% else %}
+                    Update
+                    {% endif %}
+                </button>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {%endif%}
+
+  {% endblock %}

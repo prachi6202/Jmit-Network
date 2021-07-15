@@ -1,0 +1,77 @@
+{% load tailwind_filters %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://unpkg.com/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Work+Sans:200,400&display=swap" rel="stylesheet">
+<style media="screen">
+	@media only screen and (max-width: 600px) {
+		.mr-5{
+			margin-left: 15%;
+			margin-top: 10px;
+		}
+		.down{
+			margin-top: 8%;
+		}
+		.last-ni{
+			position: absolute;
+			margin-top: -66%;
+			margin-left:-2%;
+		}
+		.last-ni-2{
+			position: absolute;
+			margin-top: -47%;
+			margin-left:-2%;
+		}
+	}
+	</style>
+	{% block head_content %}
+	{% endblock head_content %}
+</head>
+<body>
+    {% include "nav.html" %}
+    {% block container %}
+    {% endblock%}
+
+		<script>
+		  /*Toggle dropdown list*/
+		  /*https://gist.github.com/slavapas/593e8e50cf4cc16ac972afcbad4f70c8*/
+
+		  var navMenuDiv = document.getElementById("nav-content");
+		  var navMenu = document.getElementById("nav-toggle");
+
+		  document.onclick = check;
+		  function check(e) {
+		    var target = (e && e.target) || (event && event.srcElement);
+
+		    //Nav Menu
+		    if (!checkParent(target, navMenuDiv)) {
+		      // click NOT on the menu
+		      if (checkParent(target, navMenu)) {
+		        // click on the link
+		        if (navMenuDiv.classList.contains("hidden")) {
+		          navMenuDiv.classList.remove("hidden");
+		        } else {
+		          navMenuDiv.classList.add("hidden");
+		        }
+		      } else {
+		        // click both outside link and outside menu, hide menu
+		        navMenuDiv.classList.add("hidden");
+		      }
+		    }
+		  }
+		  function checkParent(t, elm) {
+		    while (t.parentNode) {
+		      if (t == elm) {
+		        return true;
+		      }
+		      t = t.parentNode;
+		    }
+		    return false;
+		  }
+		</script>
+</body>
+</html>

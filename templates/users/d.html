@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load tailwind_filters %}
+{%load static%}
+{% block head_content %}
+<title>@{{ user.username }} - Jmit Network </title>
+{% endblock %}
+{% block container %}
+<center>
+  <br><br><br><br>
+<h1 style="font-size:30px;">Sorry no user found!</h1>
+</center>
+{% endblock %}
